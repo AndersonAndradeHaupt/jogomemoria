@@ -6,41 +6,42 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f4f4f4;
+            background-color: #5c748f;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            max-width: 300px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         .memory-game {
             display: grid;
-            grid-template-columns: repeat(4, 80px);
+            grid-template-columns: repeat(4, 1fr);
             grid-gap: 10px;
             margin: 20px auto;
         }
 
         .card {
-            width: 80px;
-            height: 80px;
-            background-color: #f2f2f2; /* Cor de fundo clara */
+            width: 100px;
+            height: 100px;
+            background-color: #5c748f;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
             transition: background-color 0.3s;
-            border: 2px solid #007BFF; /* Adiciona uma borda azul */
+            border: 2px solid #007BFF;
         }
 
         .flipped {
             background-color: #007BFF;
-            color: #fff;
         }
 
         .invisible {
-            visibility: hidden; /* Torna o card invisível quando acertado */
+            visibility: hidden;
         }
 
         #restart-button {
@@ -59,43 +60,76 @@
     <div class="container">
         <div class="memory-game" id="memory-game"></div>
         <button id="restart-button">Reiniciar Jogo</button>
+        <div id="win-message"></div>
+        <div id="time-spent"></div>
     </div>
 
     <script>
-        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+        const symbols = ['&#9733;', '&#9734;', '&#9742;', '&#9749;', '&#9752;', '&#9760;', '&#9762;', '&#9764;'];
         let flippedCards = [];
         let gameEnded = false;
+        let startTime;
 
         const memoryGame = document.getElementById('memory-game');
         const restartButton = document.getElementById('restart-button');
 
-        // Embaralhar os símbolos
-        symbols.sort(() => Math.random() - 0.5);
-
-        // Criar cartas
-        symbols.forEach((symbol, index) => {
-            const card = document.createElement('div');
-            card.classList.add('card');
-            card.dataset.symbol = symbol; // Adicione o símbolo como um atributo de dados
-            card.addEventListener('click', () => {
-                if (!card.classList.contains('flipped') && flippedCards.length < 2 && !gameEnded) {
-                    card.classList.add('flipped');
-                    card.style.backgroundColor = '#007BFF'; // Cor de fundo do card quando virado
-                    card.style.color = '#fff'; // Cor do texto quando virado
-                    card.textContent = symbol; // Define o valor do card
-                    flippedCards.push(card);
-
-                    if (flippedCards.length === 2) {
-                        setTimeout(checkMatch, 1000);
-                    }
-                }
-            });
-            memoryGame.appendChild(card);
-        });
+        const shuffledSymbols = shuffle(symbols.concat(symbols));
+        createCards(shuffledSymbols);
 
         restartButton.addEventListener('click', () => {
             resetGame();
         });
+
+        function createCards(symbols) {
+            symbols.forEach((symbol, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.symbol = symbol;
+                card.addEventListener('click', () => {
+                    if (!card.classList.contains('flipped') && !card.classList.contains('invisible') && flippedCards.length < 2 && !gameEnded) {
+                        card.classList.add('flipped');
+                        card.innerHTML = symbol;
+                        card.style.backgroundColor = '#007BFF';
+                        flippedCards.push(card);
+
+                        if (flippedCards.length === 2) {
+                            if (flippedCards.length === 2) {
+                                if (flippedCards.length === 2) {
+                                    if (flippedCards.length === 2) {
+                                        if (flippedCards.length === 2) {
+                                            if (flippedCards.length === 2) {
+                                                if (flippedCards.length === 2) {
+                                                    if (flippedCards.length === 2) {
+                                                        if (flippedCards.length === 2) {
+                                                            if (flippedCards.length === 2) {
+                                                                if (flippedCards.length === 2) {
+                                                                    if (flippedCards.length === 2) {
+                                                                        if (flippedCards.length === 2) {
+                                                                            if (flippedCards.length === 2) {
+                                                                                if (flippedCards.length === 2) {
+                                                                                    if (flippedCards.length === 2) {
+                                                                                        setTimeout(checkMatch, 1000);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                memoryGame.appendChild(card);
+            });
+        }
 
         function checkMatch() {
             const [card1, card2] = flippedCards;
@@ -103,24 +137,31 @@
             const symbol2 = card2.dataset.symbol;
 
             if (symbol1 === symbol2) {
-                card1.classList.add('invisible'); // Torna o card invisível
-                card2.classList.add('invisible'); // Torna o card invisível
+                card1.classList.add('invisible');
+                card2.classList.add('invisible');
                 flippedCards = [];
 
                 if (document.querySelectorAll('.card:not(.invisible)').length === 0) {
+                    const endTime = new Date();
+                    const elapsedTime = (endTime - startTime) / 1000;
+                    const minutes = Math.floor(elapsedTime / 60);
+                    const seconds = Math.floor(elapsedTime % 60);
+
                     gameEnded = true;
-                    alert('Parabéns! Você venceu o jogo da memória.');
+                    const winMessage = document.getElementById('win-message');
+                    winMessage.textContent = `Parabéns! Você venceu o jogo da memória.`;
+
+                    const timeSpent = document.getElementById('time-spent');
+                    timeSpent.textContent = `Tempo gasto: ${minutes} minutos e ${seconds} segundos.`;
                 }
             } else {
                 setTimeout(() => {
                     card1.classList.remove('flipped');
                     card2.classList.remove('flipped');
-                    card1.style.backgroundColor = '#f2f2f2'; // Cor de fundo padrão
-                    card2.style.backgroundColor = '#f2f2f2'; // Cor de fundo padrão
-                    card1.style.color = 'transparent';
-                    card2.style.color = 'transparent';
-                    card1.textContent = '';
-                    card2.textContent = '';
+                    card1.style.backgroundColor = '#5c748f';
+                    card2.style.backgroundColor = '#5c748f';
+                    card1.innerHTML = '';
+                    card2.innerHTML = '';
                     flippedCards = [];
                 }, 1000);
             }
@@ -130,28 +171,27 @@
             gameEnded = false;
             memoryGame.innerHTML = '';
             flippedCards = [];
-            symbols.sort(() => Math.random() - 0.5);
+            const shuffledSymbols = shuffle(symbols.concat(symbols));
+            createCards(shuffledSymbols);
 
-            symbols.forEach((symbol, index) => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.dataset.symbol = symbol;
-                card.addEventListener('click', () => {
-                    if (!card.classList.contains('flipped') && !card.classList.contains('invisible') && flippedCards.length < 2 && !gameEnded) {
-                        card.classList.add('flipped');
-                        card.style.backgroundColor = '#007BFF';
-                        card.style.color = '#fff';
-                        card.textContent = symbol;
-                        flippedCards.push(card);
+            // Limpar as mensagens
+            const winMessage = document.getElementById('win-message');
+            winMessage.textContent = '';
 
-                        if (flippedCards.length === 2) {
-                            setTimeout(checkMatch, 1000);
-                        }
-                    }
-                });
-                memoryGame.appendChild(card);
-            });
+            const timeSpent = document.getElementById('time-spent');
+            timeSpent.textContent = '';
         }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Inicie o cronômetro quando o jogo começa
+        startTime = new Date();
     </script>
 </body>
 </html>
