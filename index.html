@@ -26,18 +26,18 @@
         .card {
             width: 100px;
             height: 100px;
-            background-color: #5c748f;
+            background-color: #5c748f; /* Cor de fundo suave */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            border: 2px solid #007BFF;
+            transition: background-color 0.3s, border 0.3s; /* Adicione a transição da borda */
+            border: 6px solid #0752a3; /* Espessura da borda aumentada */
         }
 
         .flipped {
-            background-color: #007BFF;
+            background-color: #5c748f;
         }
 
         .invisible {
@@ -89,7 +89,7 @@
                     if (!card.classList.contains('flipped') && !card.classList.contains('invisible') && flippedCards.length < 2 && !gameEnded) {
                         card.classList.add('flipped');
                         card.innerHTML = symbol;
-                        card.style.backgroundColor = '#007BFF';
+                        card.style.backgroundColor = '#5c748f';
                         flippedCards.push(card);
 
                         if (flippedCards.length === 2) {
@@ -106,11 +106,7 @@
                                                                     if (flippedCards.length === 2) {
                                                                         if (flippedCards.length === 2) {
                                                                             if (flippedCards.length === 2) {
-                                                                                if (flippedCards.length === 2) {
-                                                                                    if (flippedCards.length === 2) {
-                                                                                        setTimeout(checkMatch, 1000);
-                                                                                    }
-                                                                                }
+                                                                                setTimeout(checkMatch, 1000);
                                                                             }
                                                                         }
                                                                     }
